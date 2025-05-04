@@ -1,11 +1,11 @@
 #include <stdlib.h>
 #include <exception>
 
-#include <vkrt/App.hpp>
+#include "vkrt/App.hpp"
 
 int main() {
     try {
-        App app;
+        vkrt::App app;
         app.run();
     } catch (const std::exception &e) {
         // Handle error here
