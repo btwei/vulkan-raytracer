@@ -1,6 +1,7 @@
 #include "vkrt/App.hpp"
 
-vkrt::App::App() : window(800, 600, "Vulkan Raytracer") {
+vkrt::App::App() : window(800, 600, "Vulkan Raytracer"),
+                   renderer(window) {
 
 }
 
