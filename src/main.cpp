@@ -1,3 +1,4 @@
+#include <iostream>
 #include <stdlib.h>
 #include <exception>
 
@@ -8,7 +9,7 @@ int main() {
         vkrt::App app;
         app.run();
     } catch (const std::exception &e) {
-        // Handle error here
+        std::cerr << "Fatal error: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
