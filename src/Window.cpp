@@ -15,6 +15,16 @@ bool Window::shouldClose() const { return glfwWindowShouldClose(window); }
 
 void Window::pollEvents() const { glfwPollEvents(); }
 
+std::vector<const char*> Window::getRequiredInstanceExtensions() {
+    uint32_t count;
+    const char** glfwExtensions;
+
+    glfwExtensions = glfwGetRequiredInstanceExtensions(&count);
+
+    std::vector<const char*> extensions(glfwExtensions, glfwExtensions + count);
+    return extensions;
+}
+
 VkSurfaceKHR Window::createSurface(VkInstance instance) const {
     VkSurfaceKHR surface;
     glfwCreateWindowSurface(instance, window, nullptr, &surface);

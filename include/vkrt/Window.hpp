@@ -2,6 +2,7 @@
 #define VKRT_WINDOW_HPP
 
 #include <string>
+#include <vector>
 
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
@@ -25,6 +26,7 @@ public:
     bool shouldClose() const;
     void pollEvents() const;
 
+    std::vector<const char*> getRequiredInstanceExtensions();
     VkSurfaceKHR createSurface(VkInstance instance) const;
 
     GLFWwindow* getGLFWwindow() const { return window; }
