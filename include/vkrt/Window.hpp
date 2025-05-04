@@ -1,26 +1,46 @@
 #ifndef VKRT_WINDOW_HPP
 #define VKRT_WINDOW_HPP
 
+#include <string>
+
+#include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 
 namespace vkrt {
 
 /**
  * @class Window
- * @brief Manages a platform window for rendering.
+ * @brief Manages an application window using GLFW with setup for Vulkan rendering.
  * 
- * Handles window creation, event polling, and buffer swapping.
+ * Handles window creation, event polling, and platform specific surface creation.
  */
 class Window {
 public:
-    Window();
+    Window(int width, int height, const std::string& title);
     ~Window();
-    bool shouldClose() const;
-    void pollEvents();
-    void swapBuffers();
-    
-private:
 
+    Window(const Window&) = delete;
+    Window& operator=(const Window&) = delete;
+
+    bool shouldClose() const;
+    void pollEvents() const;
+
+    VkSurfaceKHR createSurface(VkInstance instance) const;
+
+    GLFWwindow* getGLFWwindow() const { return window; }
+    int getWidth() const { return width; }
+    int getHeight() const { return height; }
+    int getFramebufferWidth() const { return framebufferWidth; }
+    int getFramebufferHeight() const { return framebufferHeight; }
+
+private:
+    void initWindow(int width, int height, const std::string& title);
+
+    GLFWwindow* window = nullptr;
+    int width;
+    int height;
+    int framebufferWidth;
+    int framebufferHeight;
 };
 
 } // namespace vkrt
