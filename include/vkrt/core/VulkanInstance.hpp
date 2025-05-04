@@ -1,16 +1,26 @@
-#ifndef VULKANINSTANCE_HPP
-#define VULKANINSTANCE_HPP
+#ifndef VKRT_VULKANINSTANCE_HPP
+#define VKRT_VULKANINSTANCE_HPP
+
+#include <stdexcept>
 
 #include <vulkan/vulkan.h>
 
+#include "vkrt/Window.hpp"
+
+namespace vkrt {
+
 class VulkanInstance {
 public:
-    VulkanInstance();
+    VulkanInstance(Window& window);
     ~VulkanInstance();
 
     VkInstance getInstance() { return instance; }
 private:
+    void initInstance(Window& window);
+
     VkInstance instance;
 };
 
-#endif
+} // namespace vkrt
+
+#endif // VKRT_VULKANINSTANCE_HPP
