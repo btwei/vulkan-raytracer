@@ -13,7 +13,7 @@ namespace vkrt {
 
 /**
  * @class VulkanInstance
- * @brief Encapsualted the creation, management, and destruction of a Vulkan instance.
+ * @brief Encapsulates the creation, management, and destruction of a Vulkan instance.
  * 
  * This class handles initialization of the Vulkan instance, including application
  * info, required extensions, validation layers, and debug messenger (if enabled). 
@@ -27,7 +27,7 @@ public:
     VulkanInstance(const VulkanInstance&) = delete;
     VulkanInstance& operator=(const VulkanInstance&) = delete;
 
-    VkInstance getInstance() { return instance; }
+    VkInstance getInstance() const { return instance; }
 
 private:
     static constexpr const char* validationLayers[] = {
