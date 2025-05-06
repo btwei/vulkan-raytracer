@@ -2,7 +2,8 @@
 
 namespace vkrt {
 
-Renderer::Renderer(Window& window) : instance(window) {
+Renderer::Renderer(Window& window) : instance(window),
+                                     surface(window, instance) {
 
 }
 
