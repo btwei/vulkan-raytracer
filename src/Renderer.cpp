@@ -3,7 +3,8 @@
 namespace vkrt {
 
 Renderer::Renderer(Window& window) : instance(window),
-                                     surface(window, instance) {
+                                     surface(window, instance),
+                                     device(instance, surface) {
 
 }
 
