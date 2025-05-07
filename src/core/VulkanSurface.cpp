@@ -5,7 +5,7 @@ namespace vkrt {
 VulkanSurface::VulkanSurface(const Window& window, const VulkanInstance& vulkanInstance) :
     window(window),
     vulkanInstance(vulkanInstance) {
-
+    initSurface();
 } 
 
 VulkanSurface::~VulkanSurface(){
