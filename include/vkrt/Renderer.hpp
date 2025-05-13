@@ -5,6 +5,7 @@
 #include "vkrt/core/VulkanInstance.hpp"
 #include "vkrt/core/VulkanSurface.hpp"
 #include "vkrt/core/VulkanDevice.hpp"
+#include "vkrt/core/VulkanSwapchain.hpp"
 
 namespace vkrt {
 
@@ -15,6 +16,7 @@ private:
     VulkanInstance instance;
     VulkanSurface surface;
     VulkanDevice device;
+    VulkanSwapchain swapchain;
 };
 
 } // namespace vkrt
