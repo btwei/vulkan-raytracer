@@ -1,3 +1,7 @@
+// Copyright (c) 2025 Benjamin Wei. All rights reserved.
+// This file is part of the vulkan-raytracer project.
+// Use, copying, modification, redistribution, or inclusion in training data (e.g. for AI) is strictly prohibited.
+
 #ifndef VKRT_VULKANSWAPCHAIN_HPP
 #define VKRT_VULAKNSWAPCHAIN_HPP
 
@@ -30,6 +34,8 @@ public:
     VulkanSwapchain(const VulkanSwapchain&) = delete;
     VulkanSwapchain& operator=(const VulkanSwapchain&) = delete;
 
+    void recreateSwapchain();
+
     VkSwapchainKHR getSwapchain() const { return swapchain; }
     std::vector<VkImage> getSwapchainImages() const { return swapchainImages; }
 
@@ -48,7 +54,6 @@ private:
     void setSwapchainProperties();
     void createSwapchain();
     void createSwapchainImageViews();
-    void recreateSwapchain();
 
     VkExtent2D chooseSwapchainExtent();
 };
