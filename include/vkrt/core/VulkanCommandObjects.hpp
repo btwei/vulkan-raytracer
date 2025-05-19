@@ -20,7 +20,9 @@ class VulkanCommandBuffer;
  * @class VulkanCommandPool
  * @brief Handles creation, access, and use of a VkCommandPool.
  * 
- * 
+ * Encapsulates Vulkan command pools. Requires flags and queueFamilyIndex to be specified.
+ * Example usages could be creating a pool for each queueFamilyIndex or even creating a
+ * dedicated pool for single use command buffers.
  */
 class VulkanCommandPool {
 public:
