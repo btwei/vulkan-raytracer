@@ -10,6 +10,7 @@
 #include "vkrt/core/VulkanSurface.hpp"
 #include "vkrt/core/VulkanDevice.hpp"
 #include "vkrt/core/VulkanSwapchain.hpp"
+#include "vkrt/core/VulkanCommandObjects.hpp"
 
 namespace vkrt {
 
@@ -21,6 +22,8 @@ private:
     VulkanSurface surface;
     VulkanDevice device;
     VulkanSwapchain swapchain;
+    VulkanCommandPool graphicsPool;
+    VulkanCommandPool computePool;
 };
 
 } // namespace vkrt

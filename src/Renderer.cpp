@@ -9,7 +9,9 @@ namespace vkrt {
 Renderer::Renderer(Window& window) : instance(window),
                                      surface(window, instance),
                                      device(instance, surface),
-                                     swapchain(window, surface, device) {
+                                     swapchain(window, surface, device),
+                                     graphicsPool(device, static_cast<VkCommandPoolCreateFlags>(0), device.getPresentFamilyIndex()),
+                                     computePool(device, static_cast<VkCommandPoolCreateFlags>(0), device.getComputeFamilyIndex()) {
 
 }
 
