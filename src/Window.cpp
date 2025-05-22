@@ -15,6 +15,10 @@ Window::~Window() {
     glfwTerminate();
 }
 
+void Window::setDropCallback(WindowDropFunc callback) { userSetDropCallback = callback; }
+
+void Window::setUserData(void* data) { userData = data; }
+
 bool Window::shouldClose() const { return glfwWindowShouldClose(window); }
 
 void Window::pollEvents() const { glfwPollEvents(); }
@@ -35,6 +39,13 @@ VkSurfaceKHR Window::createSurface(VkInstance instance) const {
     return surface;
 }
 
+void Window::internalDropCallback(GLFWwindow* window, int count, const char** paths) {
+    Window* w = reinterpret_cast<Window*>(glfwGetWindowUserPointer(window));
+    if(w->userSetDropCallback != nullptr) {
+        w->userSetDropCallback(w->userData, count, paths);
+    }
+}
+
 void Window::initWindow(int width, int height, const std::string& title) {
     glfwInit();
 
@@ -45,6 +56,9 @@ void Window::initWindow(int width, int height, const std::string& title) {
 
     glfwGetWindowSize(window, &width, &height);
     glfwGetFramebufferSize(window, &framebufferWidth, &framebufferHeight);
+
+    glfwSetWindowUserPointer(window, this);
+    glfwSetDropCallback(window, internalDropCallback);
 }
 
 } // namespace vkrt

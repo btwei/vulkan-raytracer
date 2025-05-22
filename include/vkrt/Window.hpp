@@ -13,6 +13,8 @@
 
 namespace vkrt {
 
+typedef void (* WindowDropFunc)(void* userdata, int count, const char** paths);
+
 /**
  * @class Window
  * @brief Manages an application window using GLFW with setup for Vulkan rendering.
@@ -27,12 +29,14 @@ public:
     Window(const Window&) = delete;
     Window& operator=(const Window&) = delete;
 
-    bool shouldClose() const;
+    void setDropCallback(WindowDropFunc callback);
+    void setUserData(void* data);
     void pollEvents() const;
 
     std::vector<const char*> getRequiredInstanceExtensions();
     VkSurfaceKHR createSurface(VkInstance instance) const;
 
+    bool shouldClose() const;
     GLFWwindow* getGLFWwindow() const { return window; }
     int getWidth() const { return width; }
     int getHeight() const { return height; }
@@ -40,6 +44,8 @@ public:
     int getFramebufferHeight() const { return framebufferHeight; }
 
 private:
+    static void internalDropCallback(GLFWwindow* window, int count, const char** paths);
+
     void initWindow(int width, int height, const std::string& title);
 
     GLFWwindow* window = nullptr;
@@ -47,6 +53,9 @@ private:
     int height;
     int framebufferWidth;
     int framebufferHeight;
+
+    WindowDropFunc userSetDropCallback = nullptr;
+    void* userData = nullptr;
 };
 
 } // namespace vkrt
