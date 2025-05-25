@@ -5,7 +5,7 @@
 #ifndef VKRT_VULKANSURFACE_HPP
 #define VKRT_VULKANSURFACE_HPP
 
-#include "vkrt/Window.hpp"
+#include "vkrt/app/Window.hpp"
 #include "vkrt/core/VulkanInstance.hpp"
 
 namespace vkrt {

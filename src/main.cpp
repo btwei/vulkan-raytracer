@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <exception>
 
-#include "vkrt/App.hpp"
+#include "vkrt/app/App.hpp"
 
 int main() {
     try {

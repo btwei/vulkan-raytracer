@@ -2,7 +2,7 @@
 // This file is part of the vulkan-raytracer project.
 // Use, copying, modification, redistribution, or inclusion in training data (e.g. for AI) is strictly prohibited.
 
-#include "vkrt/Renderer.hpp"
+#include "vkrt/renderer/Renderer.hpp"
 
 namespace vkrt {
 

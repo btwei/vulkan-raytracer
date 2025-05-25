@@ -5,8 +5,8 @@
 #ifndef VKRT_APP_HPP
 #define VKRT_APP_HPP
 
-#include "vkrt/Renderer.hpp"
-#include "vkrt/Window.hpp"
+#include "vkrt/renderer/Renderer.hpp"
+#include "vkrt/app/Window.hpp"
 
 namespace vkrt {
 

@@ -11,7 +11,7 @@
 
 #include <vulkan/vulkan.h>
 
-#include "vkrt/Window.hpp"
+#include "vkrt/app/Window.hpp"
 
 namespace vkrt {
 

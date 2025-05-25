@@ -11,7 +11,7 @@
 
 #include "vkrt/core/VulkanSurface.hpp"
 #include "vkrt/core/VulkanDevice.hpp"
-#include "vkrt/Window.hpp"
+#include "vkrt/app/Window.hpp"
 
 #include <vulkan/vulkan.h>
 
