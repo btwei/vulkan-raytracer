@@ -19,7 +19,7 @@ VulkanCommandPool::~VulkanCommandPool() {
     vkDestroyCommandPool(vulkanDevice.getDevice(), commandPool, nullptr);
 }
 
-VulkanCommandBuffer VulkanCommandPool::createCommandBuffer() {
+VulkanCommandBuffer VulkanCommandPool::createCommandBuffer() const {
     VkCommandBufferAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     allocInfo.commandPool = commandPool;
@@ -34,7 +34,7 @@ VulkanCommandBuffer VulkanCommandPool::createCommandBuffer() {
     return VulkanCommandBuffer(vulkanDevice, *this, commandBuffer);
 }
 
-VulkanCommandBuffer VulkanCommandPool::createCommandBuffers(uint32_t count) {
+VulkanCommandBuffer VulkanCommandPool::createCommandBuffers(uint32_t count) const {
     VkCommandBufferAllocateInfo allocInfo{};
     allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
     allocInfo.commandPool = commandPool;

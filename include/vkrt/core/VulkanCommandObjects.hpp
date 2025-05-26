@@ -34,8 +34,8 @@ public:
 
     VkCommandPool getCommandPool() const { return commandPool; }
 
-    VulkanCommandBuffer createCommandBuffer();
-    VulkanCommandBuffer createCommandBuffers(uint32_t count);
+    VulkanCommandBuffer createCommandBuffer() const;
+    VulkanCommandBuffer createCommandBuffers(uint32_t count) const;
 
 private:
     const VulkanDevice& vulkanDevice;
