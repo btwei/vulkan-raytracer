@@ -29,7 +29,7 @@ public:
     VulkanFence(const VulkanFence&) = delete;
     VulkanFence& operator=(const VulkanFence&) = delete;
 
-    VkFence getFence() const { return fence; }
+    const VkFence& getFence() const { return fence; }
 
 private:
     const VulkanDevice& vulkanDevice;
