@@ -5,6 +5,7 @@
 #ifndef VKRT_VULKANALLOCATOR_HPP
 #define VKRT_VULKANALLOCATOR_HPP
 
+#include <cstddef>
 #include <vector>
 
 #include <glm/glm.hpp>
@@ -12,7 +13,6 @@
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 1
-#define VMA_IMPLEMENTATION
 #include "vk_mem_alloc.h"
 
 #include "vkrt/core/VulkanInstance.hpp"
@@ -22,7 +22,41 @@
 
 namespace vkrt {
 
-class AllocatedBuffer;
+class VulkanAllocator;
+
+/**
+ * @class AllocatedBuffer
+ * @brief RAII wrapper for a VkBuffer and VmaAllocation
+ * 
+ * Automatically destroys the buffer memory when out of scope. Can only
+ * be constructed by a VulkanAllocator object.
+ */
+class AllocatedBuffer {
+public:
+    ~AllocatedBuffer();
+
+    AllocatedBuffer(const AllocatedBuffer&) = delete;
+    AllocatedBuffer& operator=(const AllocatedBuffer&) = delete;
+
+    AllocatedBuffer(AllocatedBuffer&& other) noexcept
+    : buffer(other.buffer)
+    , allocation(other.allocation)
+    , allocator(other.allocator) {
+        other.buffer = VK_NULL_HANDLE;
+        other.allocation = VK_NULL_HANDLE;
+    }
+
+    const VkBuffer& getBuffer() const { return buffer; }
+
+private:
+    AllocatedBuffer(VkBuffer buffer, VmaAllocation allocation, VmaAllocator allocator);
+
+    VkBuffer buffer = VK_NULL_HANDLE;
+    VmaAllocation allocation = VK_NULL_HANDLE;
+    VmaAllocator allocator = VK_NULL_HANDLE;
+
+    friend class VulkanAllocator;
+};
 
 struct Vertex {
     glm::vec3 position;
@@ -60,8 +94,7 @@ public:
     VulkanAllocator(const VulkanAllocator&) = delete;
     VulkanAllocator& operator=(const VulkanAllocator&) = delete;
 
-    MeshBuffer uploadMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
-    void copyBuffer(VkBuffer src, VkBuffer dst, VkDeviceSize size);
+    MeshBuffer uploadMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) const;
 
 private:
     const VulkanInstance& vulkanInstance;
@@ -71,40 +104,7 @@ private:
     VmaAllocator allocator;
 
     void initAllocator();
-};
-
-/**
- * @class AllocatedBuffer
- * @brief RAII wrapper for a VkBuffer and VmaAllocation
- * 
- * Automatically destroys the buffer memory when out of scope. Can only
- * be constructed by a VulkanAllocator object.
- */
-class AllocatedBuffer {
-public:
-    ~AllocatedBuffer();
-
-    AllocatedBuffer(const AllocatedBuffer&) = delete;
-    AllocatedBuffer& operator=(const AllocatedBuffer&) = delete;
-
-    AllocatedBuffer(AllocatedBuffer&& other) noexcept
-    : buffer(other.buffer)
-    , allocation(other.allocation)
-    , allocator(other.allocator) {
-        other.buffer = VK_NULL_HANDLE;
-        other.allocation = VK_NULL_HANDLE;
-    }
-
-    const VkBuffer& getBuffer() const { return buffer; }
-
-private:
-    AllocatedBuffer(VkBuffer buffer, VmaAllocation allocation, VmaAllocator allocator);
-
-    VkBuffer buffer = VK_NULL_HANDLE;
-    VmaAllocation allocation = VK_NULL_HANDLE;
-    VmaAllocator allocator = VK_NULL_HANDLE;
-
-    friend class VulkanAllocator;
+    void copyBuffer(VkBuffer src, VkBuffer dst, VkDeviceSize size) const;
 };
 
 } // namespace vkrt

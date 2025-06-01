@@ -18,7 +18,7 @@ VulkanAllocator::~VulkanAllocator() {
     vmaDestroyAllocator(allocator);
 }
 
-MeshBuffer VulkanAllocator::uploadMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) {
+MeshBuffer VulkanAllocator::uploadMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) const {
     size_t vertexBufferSize = sizeof(Vertex) * vertices.size();
     size_t indexBufferSize = sizeof(uint32_t) * indices.size();
 
@@ -26,7 +26,8 @@ MeshBuffer VulkanAllocator::uploadMesh(const std::vector<Vertex>& vertices, cons
 
     VkDeviceSize totalSize = indexBufferOffset + indexBufferSize;
 
-    VkBufferCreateInfo stagingBufferInfo = {VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO};
+    VkBufferCreateInfo stagingBufferInfo{};
+    stagingBufferInfo.sType = {VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO};
     stagingBufferInfo.size = totalSize;
     stagingBufferInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
 
@@ -41,9 +42,11 @@ MeshBuffer VulkanAllocator::uploadMesh(const std::vector<Vertex>& vertices, cons
     vmaCreateBuffer(allocator, &stagingBufferInfo, &allocCreateInfo, &stagingBuf, &stagingAlloc, &stagingInfo);
 
     memcpy(stagingInfo.pMappedData, vertices.data(), vertexBufferSize);
-    memcpy(stagingInfo.pMappedData + indexBufferOffset, indices.data(), indexBufferSize);
+    std::byte* indexStartAddress = static_cast<std::byte*>(stagingInfo.pMappedData) + indexBufferOffset;
+    memcpy(static_cast<void*>(indexStartAddress), indices.data(), indexBufferSize);
 
-    VkBufferCreateInfo localBufferInfo = {VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO};
+    VkBufferCreateInfo localBufferInfo{};
+    localBufferInfo.sType = {VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO};
     localBufferInfo.size = totalSize;
     localBufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT |
                             VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
@@ -64,13 +67,14 @@ MeshBuffer VulkanAllocator::uploadMesh(const std::vector<Vertex>& vertices, cons
     return MeshBuffer(AllocatedBuffer(localBuf, localAlloc, allocator), indexBufferOffset, indices.size());
 }
 
-void VulkanAllocator::copyBuffer(VkBuffer src, VkBuffer dst, VkDeviceSize size) {
+void VulkanAllocator::copyBuffer(VkBuffer src, VkBuffer dst, VkDeviceSize size) const {
     VulkanCommandBuffer bufs = singleTimePool.createCommandBuffer();
     VkCommandBuffer buf = bufs.getCommandBuffer();
 
     VulkanFence fence(vulkanDevice);
 
-    VkCommandBufferBeginInfo beginInfo = {VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO};
+    VkCommandBufferBeginInfo beginInfo{};
+    beginInfo.sType = {VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO};
     beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
     vkBeginCommandBuffer(buf, &beginInfo);
