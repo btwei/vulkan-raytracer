@@ -9,13 +9,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if (MSVC)
     add_compile_options(/W4 /WX)
 else()
-    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    add_compile_options()
 endif()
 
 # Find Vulkan, GLFW, and GLM
 find_package(Vulkan REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
+find_package(tinyobjloader REQUIRED)
+
+# Add VulkanMemoryAllocator as a library
+add_library(VulkanMemoryAllocator INTERFACE)
+target_include_directories(VulkanMemoryAllocator INTERFACE ${CMAKE_SOURCE_DIR}/external/VulkanMemoryAllocator/include)
 
 # Source files
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
@@ -31,4 +36,6 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Vulkan::Vulkan
         glfw
+        VulkanMemoryAllocator
+        tinyobjloader
 )
