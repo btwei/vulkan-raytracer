@@ -21,7 +21,8 @@ VulkanFence::~VulkanFence() {
 }
 
 void VulkanFence::initFence(VkFenceCreateFlagBits flags) {
-    VkFenceCreateInfo createInfo = {VK_STRUCTURE_TYPE_FENCE_CREATE_INFO};
+    VkFenceCreateInfo createInfo{};
+    createInfo.sType = {VK_STRUCTURE_TYPE_FENCE_CREATE_INFO};
     createInfo.flags = flags;
 
     if(vkCreateFence(vulkanDevice.getDevice(), &createInfo, nullptr, &fence) != VK_SUCCESS) {
@@ -39,7 +40,8 @@ VulkanSemaphore::~VulkanSemaphore() {
 }
 
 void VulkanSemaphore::initSemaphore() {
-    VkSemaphoreCreateInfo createInfo = {VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO};
+    VkSemaphoreCreateInfo createInfo{};
+    createInfo.sType = {VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO};
 
     if(vkCreateSemaphore(vulkanDevice.getDevice(), &createInfo, nullptr, &semaphore) != VK_SUCCESS) {
         throw std::runtime_error("Failed to create semaphore!");
