@@ -18,6 +18,10 @@ find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 find_package(tinyobjloader REQUIRED)
 
+# Add TinyObjLoader as a library
+add_library(tinyobjloader INTERFACE)
+target_include_directories(tinyobjloader INTERFACE ${CMAKE_SOURCE_DIR}/external/tinyobjloader)
+
 # Add VulkanMemoryAllocator as a library
 add_library(VulkanMemoryAllocator INTERFACE)
 target_include_directories(VulkanMemoryAllocator INTERFACE ${CMAKE_SOURCE_DIR}/external/VulkanMemoryAllocator/include)
