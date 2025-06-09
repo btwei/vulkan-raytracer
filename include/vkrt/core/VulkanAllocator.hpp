@@ -6,15 +6,16 @@
 #define VKRT_VULKANALLOCATOR_HPP
 
 #include <cstddef>
+#include <memory>
 #include <vector>
 
-#include <glm/glm.hpp>
 #include <vulkan/vulkan.h>
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 1
 #include "vk_mem_alloc.h"
 
+#include "vkrt/core/Vertex.hpp"
 #include "vkrt/core/VulkanInstance.hpp"
 #include "vkrt/core/VulkanDevice.hpp"
 #include "vkrt/core/VulkanCommandObjects.hpp"
@@ -56,13 +57,6 @@ private:
     VmaAllocator allocator = VK_NULL_HANDLE;
 
     friend class VulkanAllocator;
-};
-
-struct Vertex {
-    glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec2 uv;
-    glm::vec4 tangent;
 };
 
 struct MeshBuffer {
