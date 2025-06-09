@@ -100,6 +100,7 @@ void VulkanAllocator::initAllocator() {
     vulkanFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
 
     VmaAllocatorCreateInfo allocatorInfo{};
+    allocatorInfo.flags = VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;
     allocatorInfo.vulkanApiVersion = VK_API_VERSION_1_2;
     allocatorInfo.instance = vulkanInstance.getInstance();
     allocatorInfo.physicalDevice = vulkanDevice.getPhysicalDevice();
