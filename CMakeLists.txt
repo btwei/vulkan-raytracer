@@ -16,7 +16,6 @@ endif()
 find_package(Vulkan REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
-find_package(tinyobjloader REQUIRED)
 
 # Add TinyObjLoader as a library
 add_library(tinyobjloader INTERFACE)
