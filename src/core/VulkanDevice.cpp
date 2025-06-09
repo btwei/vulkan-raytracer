@@ -43,6 +43,7 @@ void VulkanDevice::pickPhysicalDevice(VkSurfaceKHR surface) {
     }
 }
 
+// TODO: check feature support
 int VulkanDevice::rateDeviceSuitability(VkPhysicalDevice device, VkSurfaceKHR surface) {
     VkPhysicalDeviceProperties deviceProperties;
     VkPhysicalDeviceFeatures deviceFeatures;
@@ -154,8 +155,13 @@ void VulkanDevice::createLogicalDevice() {
     createInfo.enabledExtensionCount = requiredExtensionCount;
     createInfo.ppEnabledExtensionNames = requiredExtensions;
 
+    VkPhysicalDeviceBufferDeviceAddressFeatures bufferDeviceAddressFeatures{};
+    bufferDeviceAddressFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_BUFFER_DEVICE_ADDRESS_FEATURES;
+    bufferDeviceAddressFeatures.bufferDeviceAddress = VK_TRUE;
+
     VkPhysicalDeviceAccelerationStructureFeaturesKHR accelFeatures{};
     accelFeatures.sType = VK_STRUCTURE_TYPE_PHYSICAL_DEVICE_ACCELERATION_STRUCTURE_FEATURES_KHR;
+    accelFeatures.pNext = &bufferDeviceAddressFeatures;
     accelFeatures.accelerationStructure = VK_TRUE;
 
     VkPhysicalDeviceRayTracingPipelineFeaturesKHR rayTracingFeatures{};
