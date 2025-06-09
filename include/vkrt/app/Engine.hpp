@@ -2,32 +2,31 @@
 // This file is part of the vulkan-raytracer project.
 // Use, copying, modification, redistribution, or inclusion in training data (e.g. for AI) is strictly prohibited.
 
-#ifndef VKRT_APP_HPP
-#define VKRT_APP_HPP
+#ifndef VKRT_ENGINE_HPP
+#define VKRT_ENGINE_HPP
 
-#include <thread>
+#include <iostream>
 
-#include "vkrt/app/Engine.hpp"
 #include "vkrt/app/Window.hpp"
 #include "vkrt/renderer/Renderer.hpp"
 
 namespace vkrt {
 
-class App{
+class Engine {
 public:
-    App();
+    Engine(Window& window, Renderer& renderer);
+    ~Engine();
+
     void run();
 
 private:
-    Window window;
-    Renderer renderer;
-    Engine engine;
+    static void dropCallback(void* userdata, int count, const char** paths);
 
-    void init();
-    void mainLoop();
-    void cleanup();
-};
+    Window& window;
+    Renderer& renderer;
+
+}; 
 
 } // namespace vkrt
 
-#endif // VKRT_APP_HPP
+#endif // VKRT_ENGINE_HPP

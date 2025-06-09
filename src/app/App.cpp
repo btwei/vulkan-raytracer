@@ -5,7 +5,8 @@
 #include "vkrt/app/App.hpp"
 
 vkrt::App::App() : window(800, 600, "Vulkan Raytracer"),
-                   renderer(window) {
+                   renderer(window),
+                   engine(window, renderer) {
 
 }
 
@@ -20,11 +21,13 @@ void vkrt::App::init() {
 }
 
 void vkrt::App::mainLoop() {
-    while (!window.shouldClose()) {
-        window.pollEvents();
-    }
+    // Launch rendering thread
+
+    // Run updates and logic on the main thread
+    engine.run();
 }
 
 void vkrt::App::cleanup() {
+    // Join the rendering thread
 
 }

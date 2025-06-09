@@ -12,13 +12,9 @@
 #include "vkrt/core/VulkanSwapchain.hpp"
 #include "vkrt/core/VulkanCommandObjects.hpp"
 #include "vkrt/core/VulkanAllocator.hpp"
+#include "vkrt/renderer/ResourceManager.hpp"
 
 namespace vkrt {
-
-struct vkrtModel { 
-    uint32_t id = 0;
-
-};
 
 struct RenderableState {
 
@@ -26,9 +22,11 @@ struct RenderableState {
 
 /**
  * @class Renderer
- * @brief
+ * @brief A top-level rendering class for raytracing and multi-threaded rendering.
  * 
- * 
+ * This class implements all rendering related functions of vkrt. This class is 
+ * designed to run in a dedicated rendering thread calling renderFrame(). In a 
+ * separate update thread, functions such as loadMesh or updateState can be called.
  */
 class Renderer {
 public:
@@ -36,8 +34,9 @@ public:
 
     void renderFrame();
     void updateState(RenderableState renderState); // thread-safe
-    vkrtModel loadModel(const char** path); // thread-safe
-    void unloadModel(vkrtModel model); // thread-safe
+
+    MeshHandle loadOBJ(const char* path); // thread-safe
+    void unloadModel(MeshHandle meshHandle); // thread-safe
 
 private:
     VulkanInstance instance;
@@ -46,10 +45,14 @@ private:
     VulkanSwapchain swapchain;
     VulkanCommandPool graphicsPool;
     VulkanCommandPool computePool;
+    VulkanCommandPool singleTimePool;
+
+    VulkanAllocator allocator;
+    ResourceManager resourceManager;
 
     RenderableState queuedState;
     RenderableState currentState;
-    std::vector<> modelInfos;
+
 };
 
 } // namespace vkrt
