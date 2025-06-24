@@ -18,6 +18,25 @@ VulkanAllocator::~VulkanAllocator() {
     vmaDestroyAllocator(allocator);
 }
 
+AllocatedBuffer VulkanAllocator::allocateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties) {
+    VkBufferCreateInfo bufCreateInfo{};
+    bufCreateInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+    bufCreateInfo.size = size;
+    bufCreateInfo.usage = usage;
+
+    VmaAllocationCreateInfo allocCreateInfo{};
+    allocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO;
+
+    VkBuffer buf;
+    VmaAllocation alloc;
+    VmaAllocationInfo allocInfo;
+    if(vmaCreateBuffer(allocator, &bufCreateInfo, &allocCreateInfo, &buf, &alloc, &allocInfo) != VK_SUCCESS) {
+        throw std::runtime_error("Failed to create VMA Buffer!");
+    }
+
+    return AllocatedBuffer(buf, size, alloc, allocator);
+}
+
 MeshBuffer VulkanAllocator::uploadMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) const {
     size_t vertexBufferSize = sizeof(Vertex) * vertices.size();
     size_t indexBufferSize = sizeof(uint32_t) * indices.size();
@@ -51,6 +70,7 @@ MeshBuffer VulkanAllocator::uploadMesh(const std::vector<Vertex>& vertices, cons
     localBufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT |
                             VK_BUFFER_USAGE_INDEX_BUFFER_BIT |
                             VK_BUFFER_USAGE_TRANSFER_DST_BIT |
+                            VK_BUFFER_USAGE_ACCELERATION_STRUCTURE_BUILD_INPUT_READ_ONLY_BIT_KHR |
                             VK_BUFFER_USAGE_SHADER_DEVICE_ADDRESS_BIT;
 
     VmaAllocationCreateInfo localAllocCreateInfo {};
@@ -64,7 +84,7 @@ MeshBuffer VulkanAllocator::uploadMesh(const std::vector<Vertex>& vertices, cons
 
     vmaDestroyBuffer(allocator, stagingBuf, stagingAlloc); // Clean up staging buffer
 
-    return MeshBuffer(AllocatedBuffer(localBuf, localAlloc, allocator), indexBufferOffset, indices.size());
+    return MeshBuffer(AllocatedBuffer(localBuf, totalSize, localAlloc, allocator), vertices.size(), indexBufferOffset, indices.size());
 }
 
 void VulkanAllocator::copyBuffer(VkBuffer src, VkBuffer dst, VkDeviceSize size) const {
@@ -110,8 +130,9 @@ void VulkanAllocator::initAllocator() {
     vmaCreateAllocator(&allocatorInfo, &allocator);
 }
 
-AllocatedBuffer::AllocatedBuffer(VkBuffer buffer, VmaAllocation allocation, VmaAllocator allocator)
+AllocatedBuffer::AllocatedBuffer(VkBuffer buffer, VkDeviceSize size, VmaAllocation allocation, VmaAllocator allocator)
 : buffer(buffer)
+, size(size)
 , allocation(allocation)
 , allocator(allocator) { }
 

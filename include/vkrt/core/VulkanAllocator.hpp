@@ -7,6 +7,7 @@
 
 #include <cstddef>
 #include <memory>
+#include <stdexcept>
 #include <vector>
 
 #include <vulkan/vulkan.h>
@@ -41,18 +42,22 @@ public:
 
     AllocatedBuffer(AllocatedBuffer&& other) noexcept
     : buffer(other.buffer)
+    , size(other.size)
     , allocation(other.allocation)
     , allocator(other.allocator) {
         other.buffer = VK_NULL_HANDLE;
+        other.size = 0;
         other.allocation = VK_NULL_HANDLE;
     }
 
     const VkBuffer& getBuffer() const { return buffer; }
+    VkDeviceSize getSize() const { return size; }
 
 private:
-    AllocatedBuffer(VkBuffer buffer, VmaAllocation allocation, VmaAllocator allocator);
+    AllocatedBuffer(VkBuffer buffer, VkDeviceSize size, VmaAllocation allocation, VmaAllocator allocator);
 
     VkBuffer buffer = VK_NULL_HANDLE;
+    VkDeviceSize size;
     VmaAllocation allocation = VK_NULL_HANDLE;
     VmaAllocator allocator = VK_NULL_HANDLE;
 
@@ -61,11 +66,13 @@ private:
 
 struct MeshBuffer {
     AllocatedBuffer buffer;
+    uint32_t vertexCount;
     size_t indexOffset;
     uint32_t indexCount;
 private:
-    MeshBuffer(AllocatedBuffer&& buf, size_t indexOffset, uint32_t indexCount)
+    MeshBuffer(AllocatedBuffer&& buf, uint32_t vertexCount, size_t indexOffset, uint32_t indexCount)
     : buffer(std::move(buf))
+    , vertexCount(vertexCount)
     , indexOffset(indexOffset)
     , indexCount(indexCount) { }
 
@@ -88,6 +95,17 @@ public:
     VulkanAllocator(const VulkanAllocator&) = delete;
     VulkanAllocator& operator=(const VulkanAllocator&) = delete;
 
+    /**
+     * Allocates a VkBuffer wrapped as an AllocatedBuffer object.
+     * 
+     * @param size The device size of the buffer
+     * @param usage The usage flags for the buffer.
+     * @param properties The memory property flags for the buffer.
+     * @return A newly created AllocatedBuffer object.
+     * 
+     * @throws std::runtime_error If the buffer allocation fails.
+     */
+    AllocatedBuffer allocateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties);
     MeshBuffer uploadMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) const;
 
 private:
