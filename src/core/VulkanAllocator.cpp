@@ -26,6 +26,7 @@ AllocatedBuffer VulkanAllocator::allocateBuffer(VkDeviceSize size, VkBufferUsage
 
     VmaAllocationCreateInfo allocCreateInfo{};
     allocCreateInfo.usage = VMA_MEMORY_USAGE_AUTO;
+    allocCreateInfo.requiredFlags = properties;
 
     VkBuffer buf;
     VmaAllocation alloc;
