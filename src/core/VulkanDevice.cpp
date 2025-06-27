@@ -10,6 +10,7 @@ VulkanDevice::VulkanDevice(VulkanInstance& instance, VulkanSurface& vulkanSurfac
     pickPhysicalDevice(vulkanSurface.getSurface());
     findQueueFamilies(vulkanSurface.getSurface());
     createLogicalDevice();
+    volkLoadDevice(device);
 }
 
 VulkanDevice::~VulkanDevice() {

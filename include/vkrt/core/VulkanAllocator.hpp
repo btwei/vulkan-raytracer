@@ -10,7 +10,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include <vulkan/vulkan.h>
+#include <volk.h>
 
 #define VMA_STATIC_VULKAN_FUNCTIONS 0
 #define VMA_DYNAMIC_VULKAN_FUNCTIONS 1
@@ -105,7 +105,7 @@ public:
      * 
      * @throws std::runtime_error If the buffer allocation fails.
      */
-    AllocatedBuffer allocateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties);
+    AllocatedBuffer allocateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties) const;
     MeshBuffer uploadMesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices) const;
 
 private:

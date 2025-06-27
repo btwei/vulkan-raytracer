@@ -17,19 +17,23 @@ find_package(Vulkan REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
 
-# Add TinyObjLoader as a library
-add_library(tinyobjloader INTERFACE)
-target_include_directories(tinyobjloader INTERFACE ${CMAKE_SOURCE_DIR}/external/tinyobjloader)
-
-# Add VulkanMemoryAllocator as a library
-add_library(VulkanMemoryAllocator INTERFACE)
-target_include_directories(VulkanMemoryAllocator INTERFACE ${CMAKE_SOURCE_DIR}/external/VulkanMemoryAllocator/include)
-
 # Source files
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
 
 # Add executable
 add_executable(${PROJECT_NAME} ${SOURCES})
+
+# Add TinyObjLoader as a library
+add_library(tinyobjloader INTERFACE)
+target_include_directories(tinyobjloader INTERFACE ${CMAKE_SOURCE_DIR}/external/tinyobjloader)
+
+# Add Volk as a library
+add_subdirectory(external/volk)
+target_link_libraries(${PROJECT_NAME} PRIVATE volk_headers)
+
+# Add VulkanMemoryAllocator as a library
+add_library(VulkanMemoryAllocator INTERFACE)
+target_include_directories(VulkanMemoryAllocator INTERFACE ${CMAKE_SOURCE_DIR}/external/VulkanMemoryAllocator/include)
 
 # Include directories
 target_include_directories(${PROJECT_NAME} PRIVATE include)

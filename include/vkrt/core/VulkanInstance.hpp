@@ -9,7 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 
-#include <vulkan/vulkan.h>
+#include <volk.h>
 
 #include "vkrt/app/Window.hpp"
 

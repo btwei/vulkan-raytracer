@@ -7,6 +7,7 @@
 namespace vkrt {
 
 Window::Window(int width, int height, const std::string& title) {
+    volkInitialize();
     initWindow(width, height, title);
 }
 

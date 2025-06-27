@@ -9,6 +9,8 @@
 #include <set>
 #include <vector>
 
+#include <volk.h>
+
 #include "vkrt/core/VulkanInstance.hpp"
 #include "vkrt/core/VulkanSurface.hpp"
 

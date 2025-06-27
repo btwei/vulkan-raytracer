@@ -18,7 +18,7 @@ VulkanAllocator::~VulkanAllocator() {
     vmaDestroyAllocator(allocator);
 }
 
-AllocatedBuffer VulkanAllocator::allocateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties) {
+AllocatedBuffer VulkanAllocator::allocateBuffer(VkDeviceSize size, VkBufferUsageFlags usage, VkMemoryPropertyFlags properties) const {
     VkBufferCreateInfo bufCreateInfo{};
     bufCreateInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
     bufCreateInfo.size = size;
@@ -117,8 +117,8 @@ void VulkanAllocator::copyBuffer(VkBuffer src, VkBuffer dst, VkDeviceSize size) 
 
 void VulkanAllocator::initAllocator() {
     VmaVulkanFunctions vulkanFunctions = {};
-    vulkanFunctions.vkGetInstanceProcAddr = &vkGetInstanceProcAddr;
-    vulkanFunctions.vkGetDeviceProcAddr = &vkGetDeviceProcAddr;
+    vulkanFunctions.vkGetInstanceProcAddr = vkGetInstanceProcAddr;
+    vulkanFunctions.vkGetDeviceProcAddr = vkGetDeviceProcAddr;
 
     VmaAllocatorCreateInfo allocatorInfo{};
     allocatorInfo.flags = VMA_ALLOCATOR_CREATE_BUFFER_DEVICE_ADDRESS_BIT;

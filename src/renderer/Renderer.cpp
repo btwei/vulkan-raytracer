@@ -14,7 +14,7 @@ Renderer::Renderer(Window& window) : instance(window),
                                      computePool(device, static_cast<VkCommandPoolCreateFlags>(0), device.getComputeFamilyIndex()),
                                      singleTimePool(device, VK_COMMAND_POOL_CREATE_TRANSIENT_BIT, device.getPresentFamilyIndex()),
                                      allocator(instance, device, singleTimePool),
-                                     resourceManager(allocator) {
+                                     resourceManager(device, allocator, singleTimePool) {
 
 }
 

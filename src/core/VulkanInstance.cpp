@@ -7,8 +7,10 @@
 namespace vkrt {
 
 VulkanInstance::VulkanInstance(Window& window) {
+    volkInitialize();
     initInstance(window);
     setupDebugMessenger();
+    volkLoadInstance(instance);
 }
 
 VulkanInstance::~VulkanInstance() {

@@ -13,7 +13,7 @@
 #include "vkrt/core/VulkanDevice.hpp"
 #include "vkrt/app/Window.hpp"
 
-#include <vulkan/vulkan.h>
+#include <volk.h>
 
 namespace vkrt {
 

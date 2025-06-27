@@ -7,7 +7,7 @@
 
 #include <stdexcept>
 
-#include <vulkan/vulkan.h>
+#include <volk.h>
 
 #include "vkrt/core/VulkanDevice.hpp"
 
