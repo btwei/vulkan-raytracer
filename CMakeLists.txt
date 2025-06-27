@@ -28,8 +28,7 @@ add_library(tinyobjloader INTERFACE)
 target_include_directories(tinyobjloader INTERFACE ${CMAKE_SOURCE_DIR}/external/tinyobjloader)
 
 # Add Volk as a library
-add_subdirectory(external/volk)
-target_link_libraries(${PROJECT_NAME} PRIVATE volk_headers)
+add_subdirectory(${CMAKE_SOURCE_DIR}/external/volk)
 
 # Add VulkanMemoryAllocator as a library
 add_library(VulkanMemoryAllocator INTERFACE)
@@ -43,6 +42,7 @@ target_link_libraries(${PROJECT_NAME}
     PRIVATE
         Vulkan::Vulkan
         glfw
+        volk_headers
         VulkanMemoryAllocator
         tinyobjloader
 )

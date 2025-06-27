@@ -5,5 +5,6 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 #pragma GCC diagnostic ignored "-Wmissing-field-initializers"
 #define VMA_IMPLEMENTATION
+#include <volk.h>
 #include <vk_mem_alloc.h>
 #pragma GCC diagnostic pop
